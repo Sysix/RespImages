@@ -34,7 +34,7 @@ $.fn.RespImages = function (options, breaks) {
                 var result = src.match(regex),
                     attr = (settings.toSrc) ? 'src' : settings.data;
 					
-                _this.attr(attr, result[0]+'resp' + imageSize + result[2] + result[3]);
+                _this.attr(attr, result[1]+'resp' + imageSize + result[2] + result[3]);
             }
 			
         })
