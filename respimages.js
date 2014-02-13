@@ -21,7 +21,13 @@ $.fn.RespImages = function (options, breaks) {
         if (current.length == 0) {
             current.push(breakpoints[0])
         }
-        imageSize = current.pop();
+        imageSizeNew = current.pop();
+		if(imageSizeNew != imageSize) {
+       	    imageSize = imageSizeNew;		 
+		    return true;
+		}
+		
+		return false;
     }
 	
     function resplaceImages() {
@@ -45,8 +51,9 @@ $.fn.RespImages = function (options, breaks) {
 	
     _window.on('resize', function () {
         d_w = _document.width();
-        setCurrent();
-        resplaceImages();
+        if(setCurrent()) {
+			resplaceImages();
+		}
     });
 	
 	return that;
