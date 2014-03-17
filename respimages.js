@@ -1,20 +1,24 @@
 $.fn.RespImages = function (options, breaks) {
     var that = $(this),
-		_document = $(document),
-		d_w = _document.width(),
+		_window = $(window),
+		w_w = _window.width(),
         current,		
 		imageSize,
+		regex = /(\/?index\.php\?rex_img_type=|\/?imagetypes\/)resp\d*(&rex_img_file=|\/)(.*)/,
 		breakpoints = breaks || [400, 600, 800, 1000, 1200];
-		
+	
+	if(!that.length) {
+		return that;	
+	}
 		
 	var	settings = $.extend({
-            data: 'data-src',
+    		data: 'data-src',
             toSrc: true
         }, options);
 
     function setCurrent() {
         current = $.map(breakpoints, function (point, n) {
-            if (d_w >= point) {
+            if (w_w >= point) {
                 return point;
             }
         });
@@ -33,8 +37,7 @@ $.fn.RespImages = function (options, breaks) {
     function resplaceImages() {
         that.each(function () {
             var _this = $(this),
-                src = _this.attr(settings.data),
-                regex = /(index\.php\?rex_img_type=|imagetypes\/)resp\d*(&rex_img_file=|\/)(.*)/;
+                src = _this.attr(settings.data);
 				
             if (src && regex.test(src)) {
                 var result = src.match(regex),
@@ -50,7 +53,7 @@ $.fn.RespImages = function (options, breaks) {
     resplaceImages();
 	
     _window.on('resize', function () {
-        d_w = _document.width();
+        w_w = _window.width();
         if(setCurrent()) {
 			resplaceImages();
 		}
